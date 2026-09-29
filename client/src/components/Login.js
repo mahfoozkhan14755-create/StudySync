@@ -8,16 +8,22 @@ const Login = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Render backend URL set kar diya hai
+  const API_BASE_URL = 'https://studysync-avxt.onrender.com';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
+    // Backend ke actual routes ke mutabiq endpoints update kiye hain
     const endpoint = isRegistering 
-      ? 'http://localhost:5000/api/auth/register' 
-      : 'http://localhost:5000/api/auth/login';
+      ? `${API_BASE_URL}/api/register` 
+      : `${API_BASE_URL}/api/login`;
 
-    const payload = isRegistering ? { name, email, password } : { email, password };
+    const payload = isRegistering 
+      ? { fullName: name, email, password } 
+      : { email, password };
 
     try {
       const response = await fetch(endpoint, {
@@ -28,7 +34,7 @@ const Login = ({ onLoginSuccess }) => {
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || !data.success) {
         throw new Error(data.message || 'Authentication failed!');
       }
 
@@ -39,11 +45,11 @@ const Login = ({ onLoginSuccess }) => {
         return;
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token || 'dummy-token');
+      localStorage.setItem('user', JSON.stringify({ fullName: data.username, email }));
 
       alert('Login Successful! 🚀');
-      if (onLoginSuccess) onLoginSuccess(data.user);
+      if (onLoginSuccess) onLoginSuccess({ fullName: data.username, email });
       window.location.reload();
 
     } catch (err) {
@@ -55,8 +61,8 @@ const Login = ({ onLoginSuccess }) => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 relative">
-      <div className="absolute w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -translate-x-32 translate-y-32"></div>
+      <div className="absolute w-72 h-72 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute w-72 h-72 bg-blue-500/15 rounded-full blur-3xl pointer-events-none -translate-x-32 translate-y-32"></div>
 
       <div className="relative w-full max-w-md p-8 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl shadow-cyan-950/30">
         
