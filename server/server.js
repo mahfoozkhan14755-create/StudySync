@@ -103,7 +103,10 @@ app.post('/api/upload-file', upload.single('file'), (req, res) => {
       return res.status(400).json({ success: false, message: 'No file uploaded!' });
     }
     const { roomId, username } = req.body;
-    const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    
+    // Dynamic base URL for live server (Render) or local development
+    const baseUrl = req.protocol + '://' + req.get('host');
+    const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
     
     const fileObj = {
       fileName: req.file.originalname,
@@ -192,7 +195,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`StudySync Server running on port ${PORT} with Multer storage`);
 });
