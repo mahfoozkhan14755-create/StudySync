@@ -7,7 +7,15 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
+
+// Improved CORS configuration for cross-origin requests from Vercel to Render
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json({ limit: '50mb' }));
 
 // Ensure uploads folder exists
@@ -104,7 +112,6 @@ app.post('/api/upload-file', upload.single('file'), (req, res) => {
     }
     const { roomId, username } = req.body;
     
-    // Dynamic base URL for live server (Render) or local development
     const baseUrl = req.protocol + '://' + req.get('host');
     const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
     
