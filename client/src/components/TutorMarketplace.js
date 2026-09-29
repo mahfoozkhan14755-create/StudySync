@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const TutorMarketplace = () => {
   const [tutors, setTutors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/tutors')
+    axios.get(`${API_BASE_URL}/api/tutors`)
       .then((res) => setTutors(res.data))
       .catch((err) => console.error('Error fetching tutors', err));
   }, []);

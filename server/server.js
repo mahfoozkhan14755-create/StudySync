@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const app = express();
 
-// Allowed exact origins and flexible rule for any Vercel deployment preview/production
+// Flexible CORS configuration for Vercel and Localhost
 const allowedOrigins = [
   'https://study-sync-phi-six.vercel.app',
   'http://localhost:3000',
@@ -36,7 +36,6 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Serve uploaded files statically
 app.use('/uploads', express.static(uploadDir));
 
 const server = http.createServer(app);
@@ -54,7 +53,6 @@ const io = new Server(server, {
   }
 });
 
-// --- Multer Configuration for Local Storage ---
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -69,7 +67,7 @@ const upload = multer({ storage: storage });
 let users = [];
 let rooms = [];
 
-// --- REST API Endpoints ---
+// API Endpoints
 app.post('/api/register', (req, res) => {
   const { fullName, email, password } = req.body;
   const existingUser = users.find(u => u.email === email);
@@ -102,7 +100,7 @@ app.post('/api/create-room', (req, res) => {
     roomId,
     roomName,
     createdBy: username,
-    roomCode,
+.roomCode,
     messages: [],
     files: [],
     quiz: null,
@@ -123,14 +121,12 @@ app.post('/api/join-by-code', (req, res) => {
   res.json({ success: true, room });
 });
 
-// --- Multer File Upload REST API Endpoint ---
 app.post('/api/upload-file', upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'No file uploaded!' });
     }
     const { roomId, username } = req.body;
-    
     const baseUrl = req.protocol + '://' + req.get('host');
     const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
     
@@ -154,7 +150,6 @@ app.post('/api/upload-file', upload.single('file'), (req, res) => {
   }
 });
 
-// --- Socket.io Realtime Communication ---
 io.on('connection', (socket) => {
   console.log('User Connected:', socket.id);
 
@@ -163,7 +158,6 @@ io.on('connection', (socket) => {
     const room = rooms.find(r => r.roomId === roomId);
     if (room) {
       if (!room.scores) room.scores = {};
-      
       socket.emit('load-room-data', {
         messages: room.messages,
         files: room.files,
@@ -223,5 +217,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`StudySync Server running on port ${PORT} with Multer storage`);
+  console.log(`StudySync Server running on port ${PORT}`);
 });

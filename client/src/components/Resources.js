@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Resources = ({ groupId, userId }) => {
   const [files, setFiles] = useState([]);
@@ -21,7 +22,7 @@ const Resources = ({ groupId, userId }) => {
     if (!groupId) return;
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/resources/${groupId}`,
+        `${API_BASE_URL}/api/resources/${groupId}`,
         getAuthHeaders()
       );
       setFiles(res.data);
@@ -48,7 +49,7 @@ const Resources = ({ groupId, userId }) => {
       setStatusMsg('Uploading...');
       const token = localStorage.getItem('token');
       
-      await axios.post('http://localhost:5000/api/resources/upload', formData, {
+      await axios.post(`${API_BASE_URL}/api/resources/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'x-auth-token': token,
@@ -105,7 +106,7 @@ const Resources = ({ groupId, userId }) => {
               <p className="text-xs text-gray-500">Uploaded by: {item.uploadedBy?.name || 'User'}</p>
             </div>
             <a 
-              href={`http://localhost:5000${item.fileUrl}`} 
+              href={`${API_BASE_URL}${item.fileUrl}`} 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-green-600 text-white text-xs px-3 py-1.5 rounded hover:bg-green-700 font-medium"

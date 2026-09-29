@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../config';
 
 const Login = ({ onLoginSuccess }) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -8,15 +9,11 @@ const Login = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Render backend URL set kar diya hai
-  const API_BASE_URL = 'https://studysync-avxt.onrender.com';
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Backend ke actual routes ke mutabiq endpoints update kiye hain
     const endpoint = isRegistering 
       ? `${API_BASE_URL}/api/register` 
       : `${API_BASE_URL}/api/login`;
@@ -64,7 +61,7 @@ const Login = ({ onLoginSuccess }) => {
       <div className="absolute w-72 h-72 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute w-72 h-72 bg-blue-500/15 rounded-full blur-3xl pointer-events-none -translate-x-32 translate-y-32"></div>
 
-      <div className="relative w-full max-w-md p-8 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl shadow-cyan-950/30">
+      <div className="relative w-full max-w-md p-8 bg-slate-900/85 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl shadow-cyan-950/30">
         
         <div className="text-center mb-8">
           <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-wide">
@@ -129,7 +126,7 @@ const Login = ({ onLoginSuccess }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition-all disabled:opacity-50"
+            className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition-all disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Processing...' : (isRegistering ? 'Sign Up' : 'Sign In')}
           </button>
@@ -139,7 +136,7 @@ const Login = ({ onLoginSuccess }) => {
           <button
             type="button"
             onClick={() => setIsRegistering(!isRegistering)}
-            className="text-xs text-cyan-400 hover:underline font-medium"
+            className="text-xs text-cyan-400 hover:underline font-medium cursor-pointer"
           >
             {isRegistering ? 'Already have an account? Sign In' : "Don't have an account? Register"}
           </button>

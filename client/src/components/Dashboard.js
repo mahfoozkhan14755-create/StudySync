@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { API_BASE_URL } from '../config';
 
 const Dashboard = () => {
   const { user, token } = useContext(AuthContext);
@@ -20,7 +21,7 @@ const Dashboard = () => {
 
   const fetchGroups = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/groups/my-groups', authHeader);
+      const res = await axios.get(`${API_BASE_URL}/api/groups/my-groups`, authHeader);
       setGroups(res.data);
       setError('');
     } catch (err) {
@@ -35,7 +36,7 @@ const Dashboard = () => {
   const handleCreateGroup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/groups/create', { name: groupName }, authHeader);
+      await axios.post(`${API_BASE_URL}/api/groups/create`, { name: groupName }, authHeader);
       setGroupName('');
       fetchGroups();
     } catch (err) {
@@ -46,7 +47,7 @@ const Dashboard = () => {
   const handleJoinGroup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/groups/join', { code: groupCode }, authHeader);
+      await axios.post(`${API_BASE_URL}/api/groups/join`, { code: groupCode }, authHeader);
       setGroupCode('');
       fetchGroups();
     } catch (err) {

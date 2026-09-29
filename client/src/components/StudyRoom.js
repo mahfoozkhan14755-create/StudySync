@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { API_BASE_URL } from '../config';
 import Quiz from './Quiz';
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect(API_BASE_URL);
 
 const StudyRoom = () => {
   const { roomId } = useParams();
@@ -36,7 +37,7 @@ const StudyRoom = () => {
   // --- FETCH RESOURCES ---
   const fetchResources = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/resources/${roomId}`, authHeader);
+      const res = await axios.get(`${API_BASE_URL}/api/resources/${roomId}`, authHeader);
       setResources(res.data);
     } catch (err) {
       console.error('Failed to fetch resources');
@@ -141,7 +142,7 @@ const StudyRoom = () => {
     formData.append('groupId', roomId);
 
     try {
-      await axios.post('http://localhost:5000/api/resources/upload', formData, {
+      await axios.post(`${API_BASE_URL}/api/resources/upload`, formData, {
         headers: {
           ...authHeader.headers,
           'Content-Type': 'multipart/form-data'
@@ -229,7 +230,7 @@ const StudyRoom = () => {
           <ul>
             {resources.map((res) => (
               <li key={res._id} style={{ marginBottom: '8px' }}>
-                <a href={`http://localhost:5000/${res.filePath}`} target="_blank" rel="noreferrer" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 'bold' }}>
+                <a href={`${API_BASE_URL}/${res.filePath}`} target="_blank" rel="noreferrer" style={{ color: '#0284c7', textDecoration: 'none', fontWeight: 'bold' }}>
                   {res.originalName}
                 </a>
                 <span style={{ fontSize: '12px', color: '#666', marginLeft: '10px' }}>

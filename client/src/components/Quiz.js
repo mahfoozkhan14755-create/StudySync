@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { API_BASE_URL } from '../config';
 
 const Quiz = ({ groupId }) => {
   const { token } = useContext(AuthContext);
@@ -11,7 +12,7 @@ const Quiz = ({ groupId }) => {
 
   useEffect(() => {
     if (groupId) {
-      axios.get(`http://localhost:5000/api/quizzes/${groupId}`, authHeader)
+      axios.get(`${API_BASE_URL}/api/quizzes/${groupId}`, authHeader)
         .then(res => setQuizzes(res.data))
         .catch(err => console.error(err));
     }
@@ -25,10 +26,10 @@ const Quiz = ({ groupId }) => {
         title,
         questions: [{ questionText: 'Sample Question?', options: ['A', 'B', 'C', 'D'], correctAnswer: 0 }]
       };
-      await axios.post('http://localhost:5000/api/quizzes/create', newQuiz, authHeader);
+      await axios.post(`${API_BASE_URL}/api/quizzes/create`, newQuiz, authHeader);
       setTitle('');
       // Reload quizzes
-      const res = await axios.get(`http://localhost:5000/api/quizzes/${groupId}`, authHeader);
+      const res = await axios.get(`${API_BASE_URL}/api/quizzes/${groupId}`, authHeader);
       setQuizzes(res.data);
     } catch (err) {
       console.error(err);
