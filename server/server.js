@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const app = express();
 
-// Allowed origins list for Vercel and local development
+// Allowed exact origins and flexible rule for any Vercel deployment preview/production
 const allowedOrigins = [
   'https://study-sync-phi-six.vercel.app',
   'http://localhost:3000',
@@ -17,7 +17,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -42,7 +42,13 @@ app.use('/uploads', express.static(uploadDir));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true
   }
