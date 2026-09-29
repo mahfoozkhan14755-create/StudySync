@@ -1,6 +1,5 @@
 const express = require('express');
-const http = http = require('http');
-const httpModule = require('http');
+const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const multer = require('multer');
@@ -9,7 +8,7 @@ const fs = require('fs');
 
 const app = express();
 
-// Allowed origins list (Vercel frontend and local development)
+// Allowed origins list for Vercel and local development
 const allowedOrigins = [
   'https://study-sync-phi-six.vercel.app',
   'http://localhost:3000',
@@ -40,7 +39,7 @@ if (!fs.existsSync(uploadDir)) {
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadDir));
 
-const server = httpModule.createServer(app);
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
