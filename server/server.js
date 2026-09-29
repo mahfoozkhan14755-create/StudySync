@@ -1,5 +1,6 @@
 const express = require('express');
-const http = require('http');
+const http = http = require('http');
+const httpModule = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const multer = require('multer');
@@ -8,9 +9,21 @@ const fs = require('fs');
 
 const app = express();
 
-// Improved CORS configuration for cross-origin requests from Vercel to Render
+// Allowed origins list (Vercel frontend and local development)
+const allowedOrigins = [
+  'https://study-sync-phi-six.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5173'
+];
+
 app.use(cors({
-  origin: '*',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -27,11 +40,12 @@ if (!fs.existsSync(uploadDir)) {
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadDir));
 
-const server = http.createServer(app);
+const server = httpModule.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
