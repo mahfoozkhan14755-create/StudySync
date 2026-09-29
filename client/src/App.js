@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+// Use Vercel Environment Variable for Production, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const socket = io(API_BASE_URL);
 
 function App() {
   const [authMode, setAuthMode] = useState('login');
@@ -99,7 +101,7 @@ function App() {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/rooms');
+      const res = await fetch(`${API_BASE_URL}/api/rooms`);
       const data = await res.json();
       if (data.success) {
         setRooms(data.rooms);
@@ -120,7 +122,7 @@ function App() {
       : { fullName, email, password };
 
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -147,7 +149,7 @@ function App() {
     e.preventDefault();
     if (!newRoomName.trim()) return;
     try {
-      const res = await fetch('http://localhost:5000/api/create-room', {
+      const res = await fetch(`${API_BASE_URL}/api/create-room`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roomName: newRoomName, username: fullName })
@@ -176,7 +178,7 @@ function App() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/join-by-code', {
+      const res = await fetch(`${API_BASE_URL}/api/join-by-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ roomCode: joinCodeInput })
@@ -201,7 +203,6 @@ function App() {
     }
   };
 
-  // --- Multer File Upload Handler ---
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file || !activeRoom) return;
@@ -212,7 +213,7 @@ function App() {
     formData.append('username', fullName);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload-file', {
+      const res = await fetch(`${API_BASE_URL}/api/upload-file`, {
         method: 'POST',
         body: formData
       });
