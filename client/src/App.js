@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-// Use Vercel Environment Variable for Production, fallback to localhost for development
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Use Vercel Environment Variable for Production, fallback to Render backend URL for development/live
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://studysync-avxt.onrender.com';
 const socket = io(API_BASE_URL);
 
 function App() {
