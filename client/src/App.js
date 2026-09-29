@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-// Use Vercel Environment Variable for Production, fallback to Render backend URL for development/live
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://studysync-avxt.onrender.com';
+// Updated with your correct live Render backend URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://studysync-svrt.onrender.com';
 const socket = io(API_BASE_URL);
 
 function App() {
@@ -432,7 +432,7 @@ function App() {
                 <h3 className="text-lg font-bold text-indigo-400">📝 Live Group Quiz Hub</h3>
                 <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
                   <button onClick={() => setQuizSubTab('play')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${quizSubTab === 'play' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>🎮 Play Active Quiz</button>
-                  <button onClick={() => setQuizSubTab('create')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${quizSubTab === 'create' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>✏️ Create New Quiz</button>
+                  <button onClick={() => setQuizSubTab('create')} className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${quizSubTab === 'create' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>✏️️ Create New Quiz</button>
                 </div>
               </div>
 
