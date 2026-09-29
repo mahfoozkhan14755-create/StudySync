@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Dark Mode & Background Fix */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #020617 !important; /* Tailwind slate-950 */
+  color: #f8fafc !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+/* Smooth Scrolling & Custom Selection */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #06b6d4;
+  color: #020617;
+}

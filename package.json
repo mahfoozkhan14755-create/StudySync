@@ -1,0 +1,21 @@
+{
+  "name": "studysync-root",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.6.1",
+    "concurrently": "^8.2.2",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "socket.io": "^4.8.3"
+  }
+}
