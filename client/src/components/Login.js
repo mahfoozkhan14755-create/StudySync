@@ -14,9 +14,10 @@ const Login = ({ onLoginSuccess }) => {
     setError('');
     setLoading(true);
 
+    // Fixed API endpoints to match server auth routes (/api/auth/...)
     const endpoint = isRegistering 
-      ? `${API_BASE_URL}/api/register` 
-      : `${API_BASE_URL}/api/login`;
+      ? `${API_BASE_URL}/api/auth/register` 
+      : `${API_BASE_URL}/api/auth/login`;
 
     const payload = isRegistering 
       ? { fullName: name, email, password } 
