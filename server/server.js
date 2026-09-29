@@ -100,7 +100,7 @@ app.post('/api/create-room', (req, res) => {
     roomId,
     roomName,
     createdBy: username,
-.roomCode,
+    roomCode, // Fixed syntax error here (.roomCode was causing the crash)
     messages: [],
     files: [],
     quiz: null,

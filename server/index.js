@@ -10,11 +10,12 @@ require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 
-// Socket.io Setup
+// Socket.io Setup (Fixed for Production / Vercel & Localhost)
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST']
+    origin: "*", // Sabhi frontends (Vercel & Localhost) ko allow karne ke liye
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
@@ -25,7 +26,10 @@ if (!fs.existsSync('./uploads')) {
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  credentials: true
+}));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes Integration
